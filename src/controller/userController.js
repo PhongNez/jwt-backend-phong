@@ -1,14 +1,8 @@
-// Get the client
-const mysql = require('mysql2');
 
-// Create the connection to database
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    database: 'jwt',
-});
+import userService from '../service/userService'
 
 const handleUser = (req, res) => {
+    console.log("User: ", req.body);
     return res.render('user.ejs')
 }
 
@@ -17,14 +11,12 @@ const handleCreatNewUser = (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
 
+    // Tạo 1 user 
+    // userService.createNewUser(email, username, password)
 
-    connection.query(
-        'INSERT INTO users (email, username, password) VALUES (?,?,?)', [email, username, password],
-        function (err, results, fields) {
-            console.log(results); // results contains rows returned by server
-            console.log(fields); // fields contains extra meta data about results, if available
-        }
-    );
+    // lấy danh sách user
+    userService.getUser();
+
     return res.send("Create new user")
 }
 
