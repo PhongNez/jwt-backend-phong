@@ -1,26 +1,35 @@
 
 import userService from '../service/userService'
 
-const handleUser = (req, res) => {
+const handleUser = async (req, res) => {
     console.log("User: ", req.body);
-    return res.render('user.ejs')
+    // lấy danh sách user
+    let userList = await userService.getUser();
+    // await userService.deleteUser(4)
+    return res.render('user.ejs', { userList })
 }
 
-const handleCreatNewUser = (req, res) => {
+const handleCreatNewUser = async (req, res) => {
     let email = req.body.email;
     let username = req.body.username;
     let password = req.body.password;
 
     // Tạo 1 user 
-    // userService.createNewUser(email, username, password)
+    await userService.createNewUser(email, username, password)
 
-    // lấy danh sách user
-    userService.getUser();
 
-    return res.send("Create new user")
+
+    return res.redirect("/user")
+}
+
+const handleDeleteUser = async (req, res) => {
+    console.log('Check params:', req.params.id);
+    await userService.deleteUser(req.params.id)
+    return res.redirect("/user")
 }
 
 module.exports = {
     handleUser,
-    handleCreatNewUser
+    handleCreatNewUser,
+    handleDeleteUser
 }
