@@ -28,8 +28,35 @@ const handleDeleteUser = async (req, res) => {
     return res.redirect("/user")
 }
 
+const getUpdateUser = async (req, res) => {
+    let id = req.params.id;
+    console.log(">>>update Params: ", id);
+    let userData = {};
+    let user = await userService.getUserById(id);
+
+    if (user && user.length > 0) {
+        //   Mảng có phần tử thì mới gán
+        userData = user[0];
+    }
+    console.log("User Data: ", user);
+    return res.render("update-user.ejs", { userData })
+}
+
+const handleUpdateUser = async (req, res) => {
+    let email = req.body.email;
+    let username = req.body.username;
+    let id = req.body.userId
+    console.log("email: ", email);
+    console.log("username: ", username);
+    console.log("id: ", id);
+    await userService.updateUser(username, email, id)
+
+    return res.redirect("/user")
+}
 module.exports = {
     handleUser,
     handleCreatNewUser,
-    handleDeleteUser
+    handleDeleteUser,
+    getUpdateUser,
+    handleUpdateUser
 }
