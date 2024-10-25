@@ -32,13 +32,12 @@ const getUpdateUser = async (req, res) => {
     let id = req.params.id;
     console.log(">>>update Params: ", id);
     let userData = {};
-    let user = await userService.getUserById(id);
-
-    if (user && user.length > 0) {
-        //   Mảng có phần tử thì mới gán
-        userData = user[0];
-    }
-    console.log("User Data: ", user);
+    userData = await userService.getUserById(id);
+    // if (user && user.length > 0) {
+    //     //   Mảng có phần tử thì mới gán
+    //     userData = user[0];
+    // }
+    console.log("User Data: ", userData);
     return res.render("update-user.ejs", { userData })
 }
 
