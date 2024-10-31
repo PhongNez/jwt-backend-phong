@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import homeController from '../controller/homeController'
 import userController from '../controller/userController'
+import apiController from '../controller/apiController'
 
 const controllerHelloWorld = (req, res) => {
     return res.send("Hello Phong")
@@ -15,6 +16,9 @@ const initWebRoutes = (app) => {
 
     router.get('/user/update/:id', userController.getUpdateUser)
     router.post('/user/update', userController.handleUpdateUser)
+
+    // Test api 
+    router.get('/api/test-api', apiController.testApi)
     return app.use("/", router);
 }
 

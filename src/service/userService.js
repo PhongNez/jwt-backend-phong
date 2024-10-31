@@ -7,6 +7,8 @@ import db from '../models/index'
 
 // Băm password
 import bcrypt from 'bcryptjs';
+import { where } from 'sequelize/lib/sequelize';
+import { raw } from 'body-parser';
 let salt = bcrypt.genSaltSync(10);
 
 const hashPassword = (password) => {
@@ -35,10 +37,47 @@ const getUser = async () => {
     //     console.log("Error: ", e);
     // }
 
+    let newUser = await db.User.findOne({
+        where: {
+            id: 1
+        },
+        attributes: ['id', 'email', 'password'],
+        include: {
+            model: db.Group,
+            attributes: ['name', 'description'],
+        },
+        raw: true, nest: true
+    })
+
+    console.log("Test: ", newUser);
+
+    // let newRole = await db.Group.findOne({
+    //     where: {
+    //         id: 1
+    //     },
+    //     include: { model: db.Role }
+    //     , raw: true, nest: true
+    // })
+
+    // console.log("Test group: ", newRole);
+
+    let getRole = await db.Role.findAll({
+        include: {
+            model: db.Group,
+            where: {
+                id: 1
+            }
+        }, raw: true, nest: true
+    })
+    console.log("Test role: ", getRole);
+
     let users = [];
     users = await db.User.findAll();
     console.log("users: ", users[0] && users[0].username);
     return users
+
+
+
 }
 
 const createNewUser = async (email, username, password) => {
